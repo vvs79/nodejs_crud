@@ -35,13 +35,32 @@ router.get('/posts', async (req, res) => {
   // })
   // .catch((err) => { console.error('Error connecting to PostgreSQL database', err); });
 
-  try {
+  // try {
     // await connect();
-    await client.query('SELECT * FROM posts', (err, result) => {
-      if (err) { console.error('Error executing query', err); } else { res.send(result.rows); }
+    const p1 = new Promise((resolve, reject) => {
+      client.query('SELECT * FROM posts', (err, result) => {
+        if (err) {
+          reject(err);
+          // console.error('Error executing query', err);
+        } else {
+          // res.send(result.rows);
+          resolve(result.rows);
+        }
+      });
     });
-  } catch (err) {
-    console.error('Error connecting to PostgreSQL database', err); };
+
+    // p1
+    //   .then((result) => {})
+    //   .catch((err) => {});
+
+    try {
+      const result2 = await p1;
+    } catch (err) {
+      console.log('err: ', err);
+    }
+
+  //} catch (err) {
+    //console.error('Error connecting to PostgreSQL database', err); };
 });
 
 
